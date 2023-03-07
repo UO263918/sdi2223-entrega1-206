@@ -5,12 +5,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.uniovi.sdi2223206spring.entities.*;
 import com.uniovi.sdi2223206spring.services.*;
+import com.uniovi.sdi2223206spring.validators.SignUpFormValidator;
 
 @Controller
 public class UsersController {
+    @Autowired
+    private SignUpFormValidator signUpFormValidator;
 
     @Autowired
     private UsersService usersService;
@@ -61,8 +66,19 @@ public class UsersController {
         return "redirect:/user/details/" + id;
     }
 
+    @RequestMapping(value = "/signup", method = RequestMethod.GET)
+    public String signup(Model model) {
+        model.addAttribute("user", new User());
+        return "signup";
+    }
+
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String signup(@ModelAttribute("user") User user, Model model) {
+    public String signup(@Validated User user, BindingResult result) {
+        signUpFormValidator.validate(user,result);
+        if(result.hasErrors()){
+            return "signup";
+        }
+
         usersService.addUser(user);
         securityService.autoLogin(user.getDni(), user.getPasswordConfirm());
         return "redirect:home";
