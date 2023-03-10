@@ -11,8 +11,8 @@
       <li class="nav-item ">
         <a class="nav-link" href="/home">Home<span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item dropdown active">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+      <li class="nav-item dropdown active" id="marksmenu">
+        <a class="nav-link dropdown-toggle" href="#" id="marksmenu" role="button" data-toggle="dropdown"
            aria-haspopup="true" aria-expanded="false"> Gestión de notas
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -22,7 +22,7 @@
       </li>
 
       <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')" >
-        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+        <a class="nav-link dropdown-toggle" href="#" id="usersmenu" role="button" data-toggle="dropdown"
            aria-haspopup="true" aria-expanded="false"> Gestión de usuarios
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
