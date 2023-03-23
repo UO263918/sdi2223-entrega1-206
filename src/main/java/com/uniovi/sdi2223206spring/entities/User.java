@@ -12,7 +12,7 @@ public class User {
     private long id;
 
     @Column(unique = true)
-    private String dni;
+    private String email;
 
     private String name;
 
@@ -22,6 +22,8 @@ public class User {
 
     private String password;
 
+    private double wallet;
+
     @Transient
     //propiedad que no se almacena en la tabla.
     private String passwordConfirm;
@@ -29,11 +31,12 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Mark> marks;
 
-    public User(String dni, String name, String lastName) {
+    public User(String email, String name, String lastName) {
         super();
-        this.dni = dni;
+        this.email = email;
         this.name = name;
         this.lastName = lastName;
+        this.wallet = 100;
     }
 
     public User() {
@@ -48,12 +51,12 @@ public class User {
         this.id = id;
     }
 
-    public String getDni() {
-        return dni;
+    public String getEmail() {
+        return email;
     }
 
-    public void setDni(String dni) {
-        this.dni = dni;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getName() {
@@ -98,6 +101,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public double getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(double wallet) {
+        this.wallet = wallet;
     }
 
     public String getPasswordConfirm() {

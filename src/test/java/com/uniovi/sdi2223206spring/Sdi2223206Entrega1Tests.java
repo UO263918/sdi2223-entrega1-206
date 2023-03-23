@@ -13,11 +13,11 @@ import java.util.List;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class Sdi2223206SpringApplicationTests {
+class Sdi2223206Entrega1Tests {
 
     static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
     //static String Geckodriver = "C:\\Path\\geckodriver-v0.30.0-win64.exe";
-    static String Geckodriver = "C:\\Users\\Rulo\\Documents\\Raul\\Universidad\\Segundo Cuatri\\SDI\\Practicas\\sesion06\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+    static String Geckodriver = "C:\\Users\\Rulo\\Documents\\Raul\\Universidad\\Segundo Cuatri\\SDI\\Practicas\\Parte 1\\sesion06\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
     //static String PathFirefox = "/Applications/Firefox.app/Contents/MacOS/firefox-bin";
     //static String Geckodriver = "/Users/USUARIO/selenium/geckodriver-v0.30.0-macos";
     //Común a Windows y a MACOSX
@@ -56,7 +56,7 @@ class Sdi2223206SpringApplicationTests {
         driver.quit();
     }
 
-    @Test
+    /*@Test
     @Order(1)
     void PR01A(){
         PO_HomeView.checkWelcomeToPage(driver, PO_Properties.getSPANISH());
@@ -92,178 +92,142 @@ class Sdi2223206SpringApplicationTests {
     public void PR04() {
         PO_HomeView.checkChangeLanguage(driver, "btnSpanish", "btnEnglish",
                 PO_Properties.getSPANISH(), PO_Properties.getENGLISH());
-    }
+    }*/
 
-    //PR05. Prueba del formulario de registro. registro con datos correctos
+    //[Prueba1] Registro de Usuario con datos válidos.
     @Test
-    @Order(6)
-    public void PR05() {
+    @Order(1)
+    public void Prueba01() {
         //Vamos al formulario de registro
         PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
         //Rellenamos el formulario.
-        PO_SignUpView.fillForm(driver, "77777778A", "Josefo", "Perez", "77777", "77777");
+        PO_SignUpView.fillForm(driver, "prueba01@prueba01.com", "PRUEBA01", "PRUEBA01", "PRUEBA01", "PRUEBA01");
         //Comprobamos que entramos en la sección privada y nos nuestra el texto a buscar
-        String checkText = "Notas del usuario";
+        String checkText = "Esta es una zona privada la web";
         List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
         Assertions.assertEquals(checkText, result.get(0).getText());
     }
 
-    //PR06A. Prueba del formulario de registro. DNI repetido en la BD
-    // Propiedad: Error.signup.dni.duplicate
+    //[Prueba2] Registro de Usuario con datos inválidos (email vacío, nombre vacío, apellidos vacíos).
+    //Propiedad: Error.signup.passwordConfirm.coincidence
     @Test
-    @Order(7)
-    public void PR06A() {
+    @Order(2)
+    public void Prueba02() {
+        // email vacío
         PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
-        PO_SignUpView.fillForm(driver, "99999990A", "Josefo", "Perez", "77777", "77777");
-        List<WebElement> result = PO_SignUpView.checkElementByKey(driver, "Error.signup.dni.duplicate",
-                PO_Properties.getSPANISH() );
-        //Comprobamos el error de DNI repetido.
-        String checkText = PO_HomeView.getP().getString("Error.signup.dni.duplicate",
-                PO_Properties.getSPANISH());
-        Assertions.assertEquals(checkText , result.get(0).getText());
+        PO_SignUpView.fillForm(driver, "", "PRUEBA02", "PRUEBA02", "PRUEBA02", "PRUEBA02");
+
+        PO_SignUpView.checkElementByKey(driver, "Error.empty", PO_Properties.getSPANISH());
+
+        // nombre vacío
+        PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
+        PO_SignUpView.fillForm(driver, "prueba02@prueba02.com", "", "PRUEBA02", "PRUEBA02", "PRUEBA02");
+
+        PO_SignUpView.checkElementByKey(driver, "Error.empty", PO_Properties.getSPANISH());
+
+        // apellido vacío
+        PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
+        PO_SignUpView.fillForm(driver, "prueba02@prueba02.com", "PRUEBA02", "", "PRUEBA02", "PRUEBA02");
+
+        PO_SignUpView.checkElementByKey(driver, "Error.empty", PO_Properties.getSPANISH());
     }
 
-    //PR06B. Prueba del formulario de registro. Nombre corto.
-    // Propiedad: Error.signup.dni.length
+    //[Prueba3] Registro de Usuario con datos inválidos (repetición de contraseña inválida).
+    //Propiedad: Error.signup.passwordConfirm.coincidence
     @Test
-    @Order(8)
-    public void PR06B() {
+    @Order(3)
+    public void Prueba03() {
         PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
-        PO_SignUpView.fillForm(driver, "99999990B", "Jose", "Perez", "77777", "77777");
-        List<WebElement> result = PO_SignUpView.checkElementByKey(driver, "Error.signup.name.length",
-                PO_Properties.getSPANISH() );
-        //Comprobamos el error de Nombre corto de nombre corto .
-        String checkText = PO_HomeView.getP().getString("Error.signup.name.length",
-                PO_Properties.getSPANISH());
-        Assertions.assertEquals(checkText , result.get(0).getText());
-    }
-
-    //PR06C. Prueba del formulario de registro. DNI corto.
-    // Propiedad: Error.signup.dni.length
-    @Test
-    @Order(9)
-    public void PR06C() {
-        PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
-        PO_SignUpView.fillForm(driver, "999", "Josef", "Perez", "77777", "77777");
-        List<WebElement> result = PO_SignUpView.checkElementByKey(driver, "Error.signup.dni.length",
-                PO_Properties.getSPANISH() );
-        //Comprobamos el error de Nombre corto de nombre corto .
-        String checkText = PO_HomeView.getP().getString("Error.signup.dni.length",
-                PO_Properties.getSPANISH());
-        Assertions.assertEquals(checkText , result.get(0).getText());
-    }
-
-    //PR06D. Prueba del formulario de registro. Apellido corto.
-    // Propiedad: Error.signup.dni.length
-    @Test
-    @Order(10)
-    public void PR06D() {
-        PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
-        PO_SignUpView.fillForm(driver, "9991279A", "Josef", "Pere", "77777", "77777");
-        List<WebElement> result = PO_SignUpView.checkElementByKey(driver, "Error.signup.lastName.length",
-                PO_Properties.getSPANISH() );
-        //Comprobamos el error de Nombre corto de nombre corto .
-        String checkText = PO_HomeView.getP().getString("Error.signup.lastName.length",
-                PO_Properties.getSPANISH());
-        Assertions.assertEquals(checkText , result.get(0).getText());
-    }
-
-    //PR06E. Prueba del formulario de registro. Contraseña corta.
-    // Propiedad: Error.signup.dni.length
-    @Test
-    @Order(11)
-    public void PR06E() {
-        PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
-        PO_SignUpView.fillForm(driver, "9991279A", "Josef", "Perez", "7777", "7777");
-        List<WebElement> result = PO_SignUpView.checkElementByKey(driver, "Error.signup.password.length",
-                PO_Properties.getSPANISH() );
-        //Comprobamos el error de Nombre corto de nombre corto .
-        String checkText = PO_HomeView.getP().getString("Error.signup.password.length",
-                PO_Properties.getSPANISH());
-        Assertions.assertEquals(checkText , result.get(0).getText());
-    }
-
-    //PR06F. Prueba del formulario de registro. Contraseñas no coinciden.
-    // Propiedad: Error.signup.dni.length
-    @Test
-    @Order(12)
-    public void PR06F() {
-        PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
-        PO_SignUpView.fillForm(driver, "9991279A", "Josef", "Perez", "77777", "77778");
+        PO_SignUpView.fillForm(driver, "prueba03@prueba03.com", "PRUEBA03", "PRUEBA03", "PRUEBA03", "PRUEBA03B");
         List<WebElement> result = PO_SignUpView.checkElementByKey(driver, "Error.signup.passwordConfirm.coincidence",
                 PO_Properties.getSPANISH() );
-        //Comprobamos el error de Nombre corto de nombre corto .
+        //Comprobamos el error de las contraseñas no coinciden.
         String checkText = PO_HomeView.getP().getString("Error.signup.passwordConfirm.coincidence",
                 PO_Properties.getSPANISH());
         Assertions.assertEquals(checkText , result.get(0).getText());
     }
 
-    //PR07: Identificación válida con usuario de ROL usuario (99999990A/123456).
+    //[Prueba4] Registro de Usuario con datos inválidos (email existente).
+    //Propiedad: Error.signup.email.duplicate
     @Test
-    @Order(13)
-    void PR07(){
+    @Order(4)
+    public void Prueba04() {
+        PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
+        PO_SignUpView.fillForm(driver, "prueba01@prueba01.com", "PRUEBA04", "PRUEBA04", "PRUEBA04", "PRUEBA04");
+        List<WebElement> result = PO_SignUpView.checkElementByKey(driver, "Error.signup.email.duplicate",
+                PO_Properties.getSPANISH() );
+        //Comprobamos el error de email repetido.
+        String checkText = PO_HomeView.getP().getString("Error.signup.email.duplicate",
+                PO_Properties.getSPANISH());
+        Assertions.assertEquals(checkText , result.get(0).getText());
+    }
+
+    //PR05: Inicio de sesión con datos válidos (administrador).
+    @Test
+    @Order(5)
+    void Prueba05(){
         //Vamos al formulario de logueo.
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         //Rellenamos el formulario
-        PO_LoginView.fillLoginForm(driver, "99999990A", "123456");
-        //Comprobamos que entramos en la pagina privada de Alumno
-        String checkText = "Notas del usuario";
+        PO_LoginView.fillLoginForm(driver, "admin@email.com", "admin");
+        //Comprobamos que entramos en la página privada de ADMINISTRADOR
+        String checkText = "Esta es una zona de administrador de la web";
         List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
         Assertions.assertEquals(checkText, result.get(0).getText());
     }
 
-    //PR08: Identificación válida con usuario de ROL profesor (99999993D/123456).
+    //PR06: Inicio de sesión con datos válidos (usuario estándar).
     @Test
-    @Order(14)
-    void PR08(){
+    @Order(6)
+    void Prueba06(){
         //Vamos al formulario de logueo.
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         //Rellenamos el formulario
-        PO_LoginView.fillLoginForm(driver, "99999993D", "123456");
-        //Comprobamos que entramos en la pagina privada de Alumno
-        String checkText = "Notas del usuario";
+        PO_LoginView.fillLoginForm(driver, "user01@email.com", "user01");
+        //Comprobamos que entramos en la pagina privada de CLIENTE
+        String checkText = "Esta es una zona privada la web";
         List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
         Assertions.assertEquals(checkText, result.get(0).getText());
     }
 
-    //PR09: Identificación válida con usuario de ROL Administrador
+    //PR07: Inicio de sesión con datos inválidos (usuario estándar, campo email y contraseña vacíos).
     @Test
-    @Order(15)
-    void PR09(){
+    @Order(7)
+    void Prueba07(){
         //Vamos al formulario de logueo.
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         //Rellenamos el formulario
-        PO_LoginView.fillLoginForm(driver, "99999988F", "123456");
-        //Comprobamos que entramos en la pagina privada de Alumno
-        String checkText = "Notas del usuario";
-        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
-        Assertions.assertEquals(checkText, result.get(0).getText());
-    }
-
-    //PR10: Identificación inválida con usuario de ROL alumno (99999990A/123456).
-    @Test
-    @Order(16)
-    void PR010(){
-        //Vamos al formulario de logueo.
-        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-        //Rellenamos el formulario
-        PO_LoginView.fillLoginForm(driver, "9999999A", "123456");
+        PO_LoginView.fillLoginForm(driver, "", "");
         //Comprobamos que nos devuelve a la vista de logueo
         String checkText = "Identifícate";
         List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
         Assertions.assertEquals(checkText, result.get(0).getText());
     }
 
-    //PR11: Identificación válida y desconexión con usuario de ROL usuario
+    //PR08: Inicio de sesión con datos válidos (usuario estándar, email existente, pero contraseña incorrecta).
     @Test
-    @Order(17)
-    void PR11(){
+    @Order(8)
+    void Prueba08(){
         //Vamos al formulario de logueo.
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         //Rellenamos el formulario
-        PO_LoginView.fillLoginForm(driver, "99999990A", "123456");
-        //Comprobamos que entramos en la pagina privada de Alumno
-        String checkText = "Notas del usuario";
+        PO_LoginView.fillLoginForm(driver, "user01@email.com", "");
+        //Comprobamos que nos devuelve a la vista de logueo
+        String checkText = "Identifícate";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
+
+    //PR09: Hacer clic en la opción de salir de sesión y comprobar que se redirige a la página de inicio de sesión (Login).
+    @Test
+    @Order(9)
+    void Prueba09(){
+        //Vamos al formulario de logueo.
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        //Rellenamos el formulario
+        PO_LoginView.fillLoginForm(driver, "user01@email.com", "user01");
+        //Comprobamos que entramos en la pagina privada de CLIENTE
+        String checkText = "Esta es una zona privada la web";
         List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
         Assertions.assertEquals(checkText, result.get(0).getText());
         //Vamos al boton de logout
@@ -274,7 +238,27 @@ class Sdi2223206SpringApplicationTests {
         Assertions.assertEquals(checkText1, result1.get(0).getText());
     }
 
-    //PR12. Loguearse, comprobar que se visualizan 4 filas de notas y desconectarse usando el rol de estudiante
+    //PR10: Comprobar que el botón cerrar sesión no está visible si el usuario no está autenticado.
+    @Test
+    @Order(10)
+    void Prueba10(){
+        //Comprobamos que el boton no está disponible de primeras
+        driver.findElements(By.id("logout")).isEmpty();
+        //Entramos a la página de Login para comprobar si el botón está o no visible al introducir un usuario no valido
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        driver.findElements(By.id("logout")).isEmpty();
+        PO_LoginView.fillLoginForm(driver, "user01@email.com", "user01");
+        //Comprobamos que entramos en la pagina privada de CLIENTE
+        String checkText = "Esta es una zona privada la web";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+        //Ahora nos deslogueamos ya que si debería de mostrarse el botón
+        PO_HomeView.clickOption(driver, "logout", "class", "btn btn-primary");
+        //Comprobamos que no se nos muestra el botón
+        driver.findElements(By.id("logout")).isEmpty();
+    }
+
+    /*//PR12. Loguearse, comprobar que se visualizan 4 filas de notas y desconectarse usando el rol de estudiante
     @Test
     @Order(18)
     public void PR12() {
@@ -369,7 +353,11 @@ class Sdi2223206SpringApplicationTests {
         elements.get(3).click();
         //Esperamos a que aparezca la Nueva nota en la última página
         //Y Pinchamos en el enlace de borrado de la Nota "Nota Nueva 1"
-        elements = PO_View.checkElementBy(driver, "free", "//td[contains(text(), 'Nota Nueva 1')]/following-sibling::*/ a[contains(@href, 'mark/delete')]");
+        elements = PO_View.checkElementBy(driver, "free", "//td[contains(text(), 'Nota Nueva 1')]/following-sibling::*/
+
+    //DEscdomentar y subirlo pa arriba cuando eso
+   /* a[contains(@href, 'mark/delete')]");
+
         elements.get(0).click();
         //Volvemos a la última página
         elements = PO_View.checkElementBy(driver, "free", "//a[contains(@class, 'page-link')]");
@@ -380,4 +368,5 @@ class Sdi2223206SpringApplicationTests {
         String loginText = PO_HomeView.getP().getString("signup.message", PO_Properties.getSPANISH());
         PO_PrivateView.clickOption(driver, "logout", "text", loginText);
     }
+    */
 }

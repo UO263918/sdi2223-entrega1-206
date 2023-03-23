@@ -7,10 +7,10 @@ import org.openqa.selenium.WebElement;
 public class PO_LoginView extends PO_NavView{
 
     static public void fillLoginForm(WebDriver driver, String usernamep, String passwordp) {
-        WebElement dni = driver.findElement(By.name("username"));
-        dni.click();
-        dni.clear();
-        dni.sendKeys(usernamep);
+        WebElement email = driver.findElement(By.name("username"));
+        email.click();
+        email.clear();
+        email.sendKeys(usernamep);
         WebElement password = driver.findElement(By.name("password"));
         password.click();
         password.clear();

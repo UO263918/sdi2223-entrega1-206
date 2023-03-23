@@ -1,11 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:replace="fragments/head"/>
 <body>
-<!-- Barra de Navegación superior -->
+
 <nav th:replace="fragments/nav"/>
-<div class="container">
-    <h2>Usuarios</h2>
+
+<div class="container" style="text-align: center">
+    <h2 th:text="#{welcome.message}"></h2>
+    <h3 th:text="#{welcome.admin.message}">Esta es una zona de administrador de la web</h3>
+    <div>
+        <p th:text="#{welcome.user}"> Usuario Autenticado como:</p>
+        <b th:inline="text" sec:authentication="principal.username"> </b>
+    </div>
+
     <p>Los usuarios que actualmente figuran en el sistema son los
         siguientes:</p>
     <div class="table-responsive">
@@ -35,6 +44,7 @@
         </table>
     </div>
 </div>
+
 <footer th:replace="fragments/footer"/>
 </body>
 </html>
