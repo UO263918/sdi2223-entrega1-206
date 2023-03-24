@@ -27,6 +27,12 @@ public class UsersService {
         return users;
     }
 
+    public List<User> getUsersAdmin(String email) {
+        List<User> users = new ArrayList<User>();
+        usersRepository.findAllAdmin(email).forEach(users::add);
+        return users;
+    }
+
     public User getUser(Long id) {
         return usersRepository.findById(id).get();
     }
@@ -44,7 +50,8 @@ public class UsersService {
         return usersRepository.findByEmail(email);
     }
 
-    public void deleteUser(Long id) {
-        usersRepository.deleteById(id);
+    public void deleteUserByEmail(String em) {
+        User u = usersRepository.findByEmail(em);
+        usersRepository.deleteById(u.getId());
     }
 }

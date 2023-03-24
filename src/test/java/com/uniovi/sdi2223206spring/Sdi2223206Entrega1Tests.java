@@ -9,7 +9,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -256,6 +259,92 @@ class Sdi2223206Entrega1Tests {
         PO_HomeView.clickOption(driver, "logout", "class", "btn btn-primary");
         //Comprobamos que no se nos muestra el botón
         driver.findElements(By.id("logout")).isEmpty();
+    }
+
+    //PR11: Ir a la lista de usuarios, borrar el primer usuario de la lista, comprobar que la lista se actualiza y dicho usuario desaparece.
+    @Test
+    @Order(11)
+    public void Prueba11() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillLoginForm(driver, "admin@admin.es", "admin");
+        PO_View.checkElementBy(driver, "id", "vistaAdminListUsers");
+        List<WebElement> elementos=SeleniumUtils.waitLoadElementsBy(driver, "free", "//tbody/tr", PO_View.getTimeout());
+        assertTrue(elementos.size()==15);
+        PO_PrivateView.clickOption(driver, "logout", "text", "Password");
+    }
+
+    //PR12: Ir a la lista de usuarios, borrar el primer usuario de la lista, comprobar que la lista se actualiza y dicho usuario desaparece.
+    @Test
+    @Order(12)
+    public void Prueba12() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillLoginForm(driver, "admin@admin.es", "admin");
+        PO_View.checkElementBy(driver, "id", "vistaAdminListUsers");
+        int usuariosTotales = SeleniumUtils.getSize(driver,
+                "checkbox[]");
+
+        SeleniumUtils.textIsPresentOnPage(driver, "user01");
+        List<Integer> usuariosEliminar = new ArrayList<>();
+        usuariosEliminar.add(0);
+        PO_AdminView.fillAdminForm(driver, usuariosEliminar);
+
+        assertTrue(SeleniumUtils.getSize(driver,
+                "checkbox[]") == usuariosTotales - 1);
+        SeleniumUtils.textIsNotPresentOnPage(driver, "user01");
+        PO_PrivateView.clickOption(driver, "logout", "text", "Password");
+
+    }
+
+    //PR13: Ir a la lista de usuarios, borrar el último usuario de la lista, comprobar que la lista se actualiza y dicho usuario desaparece.
+    @Test
+    @Order(13)
+    public void Prueba13() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillLoginForm(driver, "admin@admin.es", "admin");
+        PO_View.checkElementBy(driver, "id", "vistaAdminListUsers");
+        int usuariosTotales = SeleniumUtils.getSize(driver,
+                "checkbox[]");
+
+        SeleniumUtils.textIsPresentOnPage(driver, "user15");
+
+        List<Integer> usuariosEliminar = new ArrayList<Integer>();
+        usuariosEliminar.add(usuariosTotales - 1);
+        PO_AdminView.fillAdminForm(driver, usuariosEliminar);
+        PO_View.getP();
+
+        assertTrue(SeleniumUtils.getSize(driver,
+                "checkbox[]") == usuariosTotales - 1);
+        SeleniumUtils.textIsNotPresentOnPage(driver, "user15");
+        PO_PrivateView.clickOption(driver, "logout", "text", "Password");
+    }
+
+    //PR14: Ir a la lista de usuarios, borrar 3 usuarios, comprobar que la lista se actualiza y dichos usuarios desaparecen.
+    @Test
+    @Order(14)
+    public void Prueba14() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillLoginForm(driver, "admin@admin.es", "admin");
+        PO_View.checkElementBy(driver, "id", "vistaAdminListUsers");
+        int previousSize = SeleniumUtils.getSize(driver,
+                "checkbox[]");
+
+        SeleniumUtils.textIsPresentOnPage(driver, "user03");
+        SeleniumUtils.textIsPresentOnPage(driver, "user04");
+        SeleniumUtils.textIsPresentOnPage(driver, "user07");
+
+        List<Integer> positionsToClick = new ArrayList<Integer>();
+        positionsToClick.add(0);
+        positionsToClick.add(1);
+        positionsToClick.add(previousSize - 1);
+        PO_AdminView.fillAdminForm(driver, positionsToClick);
+
+        assertTrue(SeleniumUtils.getSize(driver,
+                "checkbox[]") == previousSize - 3);
+        SeleniumUtils.textIsNotPresentOnPage(driver, "user03");
+        SeleniumUtils.textIsNotPresentOnPage(driver, "user04");
+        SeleniumUtils.textIsNotPresentOnPage(driver, "user07");
+
+        PO_PrivateView.clickOption(driver, "logout", "text", "Password");
     }
 
     /*//PR12. Loguearse, comprobar que se visualizan 4 filas de notas y desconectarse usando el rol de estudiante

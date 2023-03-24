@@ -119,4 +119,15 @@ public class SeleniumUtils {
 			}
 		}
 	}
+
+	/**
+	 * Método que devuelve el tamaño de un elemento que queramos
+	 *
+	 * @param driver: apuntando al navegador abierto actualmente.
+	 * @param nombreElemento: nombre del elemento que queremos obtener su tamaño.
+	 * @return Se retornará el número de elementos que contiene.
+	 */
+	public static int getSize(WebDriver driver, String nombreElemento) {
+		return driver.findElements(By.name(nombreElemento)).size();
+	}
 }

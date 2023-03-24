@@ -12,6 +12,8 @@ import com.uniovi.sdi2223206spring.entities.*;
 import com.uniovi.sdi2223206spring.services.*;
 import com.uniovi.sdi2223206spring.validators.SignUpFormValidator;
 
+import java.util.List;
+
 @Controller
 public class UsersController {
     @Autowired
@@ -26,10 +28,12 @@ public class UsersController {
     @Autowired
     private RolesService rolesService;
 
-    @RequestMapping("/user/list")
+    @RequestMapping("/admin/list")
     public String getListado(Model model) {
-        model.addAttribute("usersList", usersService.getUsers());
-        return "user/list";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        model.addAttribute("usersList", usersService.getUsersAdmin(email));
+        return "admin/list";
     }
 
     @RequestMapping(value = "/user/add")
@@ -41,7 +45,7 @@ public class UsersController {
     @RequestMapping(value = "/user/add", method = RequestMethod.POST)
     public String setUser(@ModelAttribute User user) {
         usersService.addUser(user);
-        return "redirect:/user/list";
+        return "redirect:/admin/list";
     }
 
     @RequestMapping("/user/details/{id}")
@@ -50,10 +54,12 @@ public class UsersController {
         return "user/details";
     }
 
-    @RequestMapping("/user/delete/{id}")
-    public String delete(@PathVariable Long id) {
-        usersService.deleteUser(id);
-        return "redirect:/user/list";
+    @RequestMapping(value = "/admin/list/delete", method = RequestMethod.POST)
+    public String delete(@RequestParam(name = "checkbox[]", required = false) List<String> emails) {
+        if (emails != null)
+            for (String em : emails)
+                usersService.deleteUserByEmail(em);
+        return "redirect:/admin/list";
     }
 
     @RequestMapping(value = "/user/edit/{id}")
@@ -98,7 +104,7 @@ public class UsersController {
         String email = auth.getName();
         User activeUser = usersService.getUserByEmail(email);
         if(activeUser.getRole().equals("ROLE_ADMIN")){
-            model.addAttribute("usersList", usersService.getUsers());
+            model.addAttribute("usersList", usersService.getUsersAdmin(email));
             return "admin/home";
         }
         else{
