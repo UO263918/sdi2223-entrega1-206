@@ -10,7 +10,7 @@ import java.util.List;
 
 public class PO_PrivateView extends PO_NavView{
 
-    static public void fillFormAddMark(WebDriver driver, int userOrder, String descriptionp, String scorep)
+    static public void fillFormAddoffer(WebDriver driver, int userOrder, String descriptionp, String scorep)
     {
         //Esperamos 5 segundo a que carge el DOM porque en algunos equipos falla
         SeleniumUtils.waitSeconds(driver, 5);

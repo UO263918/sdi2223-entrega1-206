@@ -107,11 +107,10 @@ public class UsersController {
             model.addAttribute("usersList", usersService.getUsersAdmin(email));
             return "admin/home";
         }
-        else{
+        else {
             model.addAttribute("wallet", activeUser.getWallet());
             return "home";
         }
-
     }
 
 }

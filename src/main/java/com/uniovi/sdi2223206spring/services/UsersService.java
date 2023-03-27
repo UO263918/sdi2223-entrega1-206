@@ -40,7 +40,7 @@ public class UsersService {
     public void addUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         if (user.getEmail() != "admin@email.com") {
-            user.setRole("ROLE_STUDENT");
+            user.setRole("ROLE_CLIENT");
             user.setWallet(100.0);
         }
         usersRepository.save(user);

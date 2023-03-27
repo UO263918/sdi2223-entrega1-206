@@ -29,7 +29,7 @@ public class User {
     private String passwordConfirm;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Mark> marks;
+    private Set<Offer> offers;
 
     public User(String email, String name, String lastName) {
         super();
@@ -83,12 +83,12 @@ public class User {
         this.role = role;
     }
 
-    public Set<Mark> getMarks() {
-        return marks;
+    public Set<Offer> getOffers() {
+        return offers;
     }
 
-    public void setMarks(Set<Mark> marks) {
-        this.marks = marks;
+    public void setOffers(Set<Offer> offers) {
+        this.offers = offers;
     }
 
     public String getFullName() {

@@ -12,7 +12,7 @@
 <div class="container" id="main-container">
     <h2>Notas</h2>
     <p>Las notas que actualmente figuran en el sistema son las siguientes:</p>
-    <form class="form-inline" action="/mark/list">
+    <form class="form-inline" action="/offer/list">
         <div class="form-group">
             <input name="searchText" type="text" class="form-control" size="50"
                    placeholder="Buscar por descripción o nombre del alumno">
@@ -24,16 +24,16 @@
         /*<![CDATA[*/
         $( "#updateButton" ).click(function() {
             let numberPage = [[${param.page}]];
-            let urlUpdate = '/mark/list/update';
+            let urlUpdate = '/offer/list/update';
             if (numberPage != null ){
                 urlUpdate += "?page="+numberPage[0];
             }
-            $("#tableMarks").load(urlUpdate);
+            $("#tableoffers").load(urlUpdate);
         });
         /*]]>*/
     </script>
     <div class="table-responsive">
-        <table class="table table-hover" th:fragment="tableMarks" id="tableMarks">
+        <table class="table table-hover" th:fragment="tableoffers" id="tableoffers">
             <thead>
             <tr>
                 <th scope="col">id</th>
@@ -45,46 +45,46 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="mark : ${markList}">
-                <td scope="row" th:text="${mark.id}"> 1</td>
-                <td th:text="${mark.description}"> Ejercicio 1</td>
-                <td th:text="${mark.score}">10</td>
-                <td><a th:href="${'/mark/details/' + mark.id}">detalles</a></td>
-                <td><a sec:authorize="hasRole('ROLE_PROFESSOR')" th:href="${'/mark/edit/' + mark.id}">modificar</a></td>
-                <td><a sec:authorize="hasRole('PROFESSOR')" th:href="${'/mark/delete/' + mark.id}">eliminar</a></td>
+            <tr th:each="offer : ${offerList}">
+                <td scope="row" th:text="${offer.id}"> 1</td>
+                <td th:text="${offer.description}"> Ejercicio 1</td>
+                <td th:text="${offer.score}">10</td>
+                <td><a th:href="${'/offer/details/' + offer.id}">detalles</a></td>
+                <td><a sec:authorize="hasRole('ROLE_CLIENT')" th:href="${'/offer/edit/' + offer.id}">modificar</a></td>
+                <td><a sec:authorize="hasRole('ROLE_CLIENT')" th:href="${'/offer/delete/' + offer.id}">eliminar</a></td>
                 <td>
-                    <div sec:authorize="hasRole('ROLE_STUDENT')" >
-                        <div th:if="${mark.resend}">
-                            <button type="button" th:id="${'resendButton' + mark.id}"
+                    <div sec:authorize="hasRole('ROLE_CLIENT')" >
+                        <div th:if="${offer.resend}">
+                            <button type="button" th:id="${'resendButton' + offer.id}"
                                     class="btn btn-success">Reenviar</button>
                             <script th:inline="javascript">
                                 /*<![CDATA[*/
-                                $( "#resendButton"+ "[[${mark.id}]]").click(function() {
-                                    $.get( "/mark/[[${mark.id}]]/noresend", function( data ) {
+                                $( "#resendButton"+ "[[${offer.id}]]").click(function() {
+                                    $.get( "/offer/[[${offer.id}]]/noresend", function( data ) {
                                         let numberPage = [[${param.page}]];
-                                        let urlUpdate = '/mark/list/update';
+                                        let urlUpdate = '/offer/list/update';
                                         if ( numberPage != null ){
                                             urlUpdate += "?page="+numberPage[0];
                                         }
-                                        $("#tableMarks").load(urlUpdate);
+                                        $("#tableoffers").load(urlUpdate);
                                     });
                                 });
                                 /*]]>*/
                             </script>
                         </div>
-                        <div th:unless="${mark.resend}">
-                            <button type="button" th:id="${'noresendButton' + mark.id}"
+                        <div th:unless="${offer.resend}">
+                            <button type="button" th:id="${'noresendButton' + offer.id}"
                                     class="btn btn-info">No reenviar</button>
                             <script th:inline="javascript">
                                 /*<![CDATA[*/
-                                $( "#noresendButton"+ "[[${mark.id}]]" ).click(function() {
-                                    $.get( "/mark/[[${mark.id}]]/resend", function( data ) {
+                                $( "#noresendButton"+ "[[${offer.id}]]" ).click(function() {
+                                    $.get( "/offer/[[${offer.id}]]/resend", function( data ) {
                                         let numberPage = [[${param.page}]];
-                                        let urlUpdate = '/mark/list/update';
+                                        let urlUpdate = '/offer/list/update';
                                         if ( numberPage != null ){
                                             urlUpdate += "?page="+numberPage[0];
                                         }
-                                        $("#tableMarks").load(urlUpdate);
+                                        $("#tableoffers").load(urlUpdate);
                                     });
                                 });
                                 /*]]>*/
@@ -96,7 +96,7 @@
             </tbody>
         </table>
     </div>
-	<div th:if="${#lists.isEmpty(markList)}"> No marks </div>
+	<div th:if="${#lists.isEmpty(offerList)}"> No offers </div>
     <footer th:replace="fragments/pagination"/>
 </div>
 

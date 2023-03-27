@@ -1,11 +1,8 @@
 package com.uniovi.sdi2223206spring.services;
 
-import java.util.HashSet;
-import java.util.Set;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.uniovi.sdi2223206spring.entities.Mark;
 import com.uniovi.sdi2223206spring.entities.User;
 
 @Service
@@ -68,43 +65,43 @@ public class InsertSampleDataService {
         user15.setPassword("user15");
         user15.setRole(rolesService.getRoles()[0]);
 
-        /*Set user1Marks = new HashSet<Mark>() {
+        /*Set user1offers = new HashSet<offer>() {
             {
-                add(new Mark("Nota A1", 10.0, user1));
-                add(new Mark("Nota A2", 9.0, user1));
-                add(new Mark("Nota A3", 7.0, user1));
-                add(new Mark("Nota A4", 6.5, user1));
+                add(new offer("Nota A1", 10.0, user1));
+                add(new offer("Nota A2", 9.0, user1));
+                add(new offer("Nota A3", 7.0, user1));
+                add(new offer("Nota A4", 6.5, user1));
             }
         };
-        user1.setMarks(user1Marks);
+        user1.setoffers(user1offers);
 
-        Set user2Marks = new HashSet<Mark>() {
+        Set user2offers = new HashSet<offer>() {
             {
-                add(new Mark("Nota B1", 5.0, user2));
-                add(new Mark("Nota B2", 4.3, user2));
-                add(new Mark("Nota B3", 8.0, user2));
-                add(new Mark("Nota B4", 3.5, user2));
+                add(new offer("Nota B1", 5.0, user2));
+                add(new offer("Nota B2", 4.3, user2));
+                add(new offer("Nota B3", 8.0, user2));
+                add(new offer("Nota B4", 3.5, user2));
             }
         };
-        user2.setMarks(user2Marks);
+        user2.setoffers(user2offers);
 
-        Set user3Marks = new HashSet<Mark>() {
+        Set user3offers = new HashSet<offer>() {
             {
-                add(new Mark("Nota C1", 5.5, user3));
-                add(new Mark("Nota C2", 6.6, user3));
-                add(new Mark("Nota C3", 7.0, user3));
+                add(new offer("Nota C1", 5.5, user3));
+                add(new offer("Nota C2", 6.6, user3));
+                add(new offer("Nota C3", 7.0, user3));
             }
         };
-        user3.setMarks(user3Marks);
+        user3.setoffers(user3offers);
 
-        Set user4Marks = new HashSet<Mark>() {
+        Set user4offers = new HashSet<offer>() {
             {
-                add(new Mark("Nota D1", 10.0, user4));
-                add(new Mark("Nota D2", 8.0, user4));
-                add(new Mark("Nota D3", 9.0, user4));
+                add(new offer("Nota D1", 10.0, user4));
+                add(new offer("Nota D2", 8.0, user4));
+                add(new offer("Nota D3", 9.0, user4));
             }
         };
-        user4.setMarks(user4Marks);*/
+        user4.setoffers(user4offers);*/
 
         usersService.addUser(user01);
         usersService.addUser(user02);
