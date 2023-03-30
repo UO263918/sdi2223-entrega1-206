@@ -2,13 +2,13 @@ package com.uniovi.sdi2223206spring.services;
 
 import com.uniovi.sdi2223206spring.entities.Offer;
 import com.uniovi.sdi2223206spring.entities.User;
+import com.uniovi.sdi2223206spring.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
 import com.uniovi.sdi2223206spring.repositories.OffersRepository;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+
 import java.util.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,48 +18,58 @@ public class OffersService {
     @Autowired
     private OffersRepository offersRepository;
 
-    public Page<Offer> getoffers(Pageable pageable) {
-        Page<Offer> offers = offersRepository.findAll(pageable);
+    @Autowired
+    private UsersRepository usersRepository;
+
+    public Page<Offer> getOffers(Pageable pageable, String email) {
+        Page<Offer> offers = offersRepository.findAll(pageable, email);
         return offers;
     }
 
-    public Offer getoffer(Long id){
+    public Offer getOffer(Long id){
         return offersRepository.findById(id).get();
     }
 
-    public void addoffer(Offer offer) {
-        // Si en Id es null le asignamos el ultimo + 1 de la lista
+    public void addOffer(Offer offer, User activeUser) {
+        offer.setUser(activeUser);
+        offer.setCreationDate(new Date(new java.util.Date().getTime()));
+        activeUser.getOffers().add(offer);
         offersRepository.save(offer);
+        usersRepository.save(activeUser);
     }
 
-    public void deleteoffer(Long id) {
+    public void deleteOffer(Long id) {
         offersRepository.deleteById(id);
     }
 
-    public void setofferResend(boolean revised, Long id) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
-
-        Offer offer = offersRepository.findById(id).get();
-
-        if(offer.getUser().getEmail().equals(email) ) {
-            offersRepository.updateResend(revised, id);
+    public void buyOffer(User user, Offer offer) {
+        if (user.getWallet() >= offer.getPrice() && user.getEmail() != offer.getUser().getEmail()) {
+            offer.setSold(true);
+            user.setWallet(user.getWallet() - offer.getPrice());
+            user.getBuyedOffers().add(offer);
+            offer.setUserBuyer(user);
+            offersRepository.save(offer);
+            usersRepository.save(user);
         }
     }
 
-    public Page<Offer> getoffersForUser(Pageable pageable, User user) {
-        Page<Offer> offers = new PageImpl<Offer>(new LinkedList<Offer>());
-        if (user.getRole().equals("ROLE_CLIENT")) {
-            offers = offersRepository.findAllByUser(pageable, user);
-        }
+    public List<Offer> getOffersForUser(User user) {
+        List<Offer> offers;
+        offers = offersRepository.findAllByUser(user);
         return offers;
     }
 
-    public Page<Offer> searchoffersByDescriptionAndNameForUser(Pageable pageable, String searchText, User user) {
+    public List<Offer> getBoughtOffersForUser(User user) {
+        List<Offer> offers;
+        offers = offersRepository.findBoughtOffersByUser(user);
+        return offers;
+    }
+
+    public Page<Offer> searchOffersByTitle(Pageable pageable, String searchText, User user) {
         Page<Offer> offers = new PageImpl<Offer>(new LinkedList<Offer>());
         searchText = "%"+searchText+"%";
         if (user.getRole().equals("ROLE_CLIENT")) {
-            offers = offersRepository.searchByDescriptionNameAndUser(pageable, searchText, user);
+            offers = offersRepository.searchByTitle(pageable, searchText, user.getEmail());
         }
         return offers;
     }

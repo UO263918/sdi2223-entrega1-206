@@ -23,6 +23,9 @@ public class UsersController {
     private UsersService usersService;
 
     @Autowired
+    private OffersService offersService;
+
+    @Autowired
     private SecurityService securityService;
 
     @Autowired
@@ -109,6 +112,7 @@ public class UsersController {
         }
         else {
             model.addAttribute("wallet", activeUser.getWallet());
+            model.addAttribute("offerList", offersService.getOffersForUser(activeUser));
             return "home";
         }
     }

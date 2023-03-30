@@ -10,26 +10,25 @@
 
 
 <div class="container" id="main-container">
-    <h2 th:text="#{offerList.h2}">Ofertas Propias</h2>
-    <p th:text="#{offerList.p}">Las ofertas suyas que actualmente figuran en el sistema son las siguientes:</p>
+    <h2 th:text="#{offerBoughtList.h2}">Ofertas Compradas</h2>
+    <p th:text="#{offerBoughtList.p}">Las ofertas compradas que actualmente figuran en el sistema son las siguientes:</p>
     <div class="table-responsive">
         <table class="table table-hover" id="tableOffers">
             <thead>
             <tr>
-                <th scope="col" th:text="#{offerList.id}">id</th>
                 <th scope="col" th:text="#{offerList.title}">Título</th>
                 <th scope="col" th:text="#{offerList.description}">Descripción</th>
                 <th scope="col" th:text="#{offerList.price}">Precio</th>
-                <th scope="col"></th>
+                <th scope="col" th:text="#{offerBoughtList.email}">Email Vendedor</th>
+
             </tr>
             </thead>
             <tbody>
-            <tr th:each="offer : ${offerList}">
-                <td scope="row" th:text="${offer.id}"> 1</td>
+            <tr th:each="offer : ${offerBoughtList}">
                 <td th:text="${offer.title}"> OFERTA DE CASCOS!! </td>
                 <td th:text="${offer.description}"> AirPods por 199,99€ </td>
                 <td th:text="${offer.price}">199.99</td>
-                <td><a sec:authorize="hasRole('ROLE_CLIENT')" th:href="${'/offer/delete/' + offer.id}" th:text="#{borrar}">eliminar</a></td>
+                <td th:text="${offer.user.email}">ejemplo1@ejemplo1.com</td>
             </tr>
             </tbody>
         </table>

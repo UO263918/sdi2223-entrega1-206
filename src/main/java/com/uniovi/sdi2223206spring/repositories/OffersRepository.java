@@ -9,20 +9,19 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface OffersRepository extends CrudRepository<Offer, Long>{
-    @Modifying
-    @Transactional
-    @Query("UPDATE Offer SET resend = ?1 WHERE id = ?2")
-    void updateResend(Boolean resend, Long id);
+import java.util.List;
 
-    Page<Offer> findAll(Pageable pageable);
+public interface OffersRepository extends CrudRepository<Offer, Long>{
+
+    @Query("SELECT r FROM Offer r WHERE (r.user.email NOT LIKE (?2))")
+    Page<Offer> findAll(Pageable pageable,String email);
 
     @Query("SELECT r FROM Offer r WHERE r.user = ?1 ORDER BY r.id ASC")
-    Page<Offer> findAllByUser(Pageable pageable, User user);
+    List<Offer> findAllByUser(User user);
 
-    @Query("SELECT r FROM Offer r WHERE (LOWER(r.description) LIKE LOWER (?1) OR LOWER(r.user.name) LIKE LOWER (?1))")
-    Page<Offer> searchByDescriptionAndName(Pageable pageable, String searchText);
+    @Query("SELECT r FROM Offer r WHERE r.userBuyer = ?1 ORDER BY r.id ASC")
+    List<Offer> findBoughtOffersByUser(User user);
 
-    @Query("SELECT r FROM Offer r WHERE (LOWER(r.description) LIKE LOWER (?1) OR LOWER(r.user.name) LIKE LOWER (?1)) AND r.user = ?2")
-    Page<Offer> searchByDescriptionNameAndUser(Pageable pageable, String searchText, User user);
+    @Query("SELECT r FROM Offer r WHERE (LOWER(r.title) LIKE LOWER (?1)) AND r.user.email NOT LIKE (?2)")
+    Page<Offer> searchByTitle(Pageable pageable, String searchText, String email);
 }

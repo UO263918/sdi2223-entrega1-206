@@ -15,28 +15,28 @@ public class Offer {
     private String description;
     private Date creationDate;
     private double price;
-    private Boolean resend = false;
+    private boolean sold;
 
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User userBuyer;
+
     public Offer() {
 
     }
 
-    public Offer(Long id, String description, Double score) {
-        this.id = id;
-        this.description = description;
-        //this.score = score;
-    }
-
-    public Offer(String title, String description, User user, Double price) {
+    public Offer(String title, String description, Double price, User user) {
         this.title = title;
         this.description = description;
         this.creationDate = new Date();
-        this.user = user;
         this.price = price;
+        this.user = user;
+        this.sold = false;
+        this.userBuyer = null;
     }
 
     public Long getId() {
@@ -87,12 +87,20 @@ public class Offer {
         this.user = user;
     }
 
-    public Boolean getResend() {
-        return resend;
+    public Boolean getSold() {
+        return sold;
     }
 
-    public void setResend(Boolean resend) {
-        this.resend = resend;
+    public void setSold(Boolean sold) {
+        this.sold = sold;
+    }
+
+    public User getUserBuyer() {
+        return userBuyer;
+    }
+
+    public void setUserBuyer(User userBuyer) {
+        this.userBuyer = userBuyer;
     }
 
     @Override
@@ -103,7 +111,7 @@ public class Offer {
                 ", description='" + description + '\'' +
                 ", creationDate=" + creationDate +
                 ", price=" + price +
-                ", resend=" + resend +
+                ", sold=" + sold +
                 ", user=" + user +
                 '}';
     }

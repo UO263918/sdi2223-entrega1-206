@@ -30,6 +30,8 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Offer> offers;
+    @OneToMany(mappedBy = "userBuyer", cascade = CascadeType.ALL)
+    private Set<Offer> buyedOffers;
 
     public User(String email, String name, String lastName) {
         super();
@@ -117,5 +119,13 @@ public class User {
 
     public void setPasswordConfirm(String passwordConfirm) {
         this.passwordConfirm = passwordConfirm;
+    }
+
+    public Set<Offer> getBuyedOffers() {
+        return buyedOffers;
+    }
+
+    public void setBuyedOffers(Set<Offer> buyedOffers) {
+        this.buyedOffers = buyedOffers;
     }
 }

@@ -19,7 +19,28 @@
     </div>
 
     <div class="table-responsive">
+        <table class="table table-hover" id="tableoffers">
+            <thead>
+            <tr>
+                <th scope="col" th:text="#{offerList.id}">id</th>
+                <th scope="col" th:text="#{offerList.title}">Título</th>
+                <th scope="col" th:text="#{offerList.description}">Descripción</th>
+                <th scope="col" th:text="#{offerList.price}">Precio</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="offer : ${offerList}">
+                <td scope="row" th:text="${offer.id}"> 1</td>
+                <td th:text="${offer.title}"> Ejercicio 1</td>
+                <td th:text="${offer.description}"> Ejercicio 1</td>
+                <td th:text="${offer.price}">10</td>
+                <td><a sec:authorize="hasRole('ROLE_CLIENT')" th:href="${'/offer/delete/' + offer.id}" th:text="#{borrar}">eliminar</a></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
+    <div th:if="${#lists.isEmpty(offerList)}"> No offers </div>
 </div>
 
 <footer th:replace="fragments/footer"/>
