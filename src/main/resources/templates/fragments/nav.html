@@ -14,23 +14,23 @@
 
       <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')" >
         <a class="nav-link dropdown-toggle" href="#" id="usersmenu" role="button" data-toggle="dropdown"
-           aria-haspopup="true" aria-expanded="false"> Gestión de usuarios
+           aria-haspopup="true" aria-expanded="false" th:text="#{nav.usersMenu}"> Gestión de usuarios
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/user/add">Agregar usuario</a>
-          <a class="dropdown-item" href="/admin/list">Ver usuarios</a>
+          <a class="dropdown-item" href="/user/add" th:text="#{nav.userAdd}">Agregar usuario</a>
+          <a class="dropdown-item" href="/admin/list" th:text="#{nav.userList}">Ver usuarios</a>
         </div>
       </li>
 
       <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_CLIENT')" >
         <a class="nav-link dropdown-toggle" href="#" id="offersmenu" role="button" data-toggle="dropdown"
-           aria-haspopup="true" aria-expanded="false"> Gestión de ofertas
+           aria-haspopup="true" aria-expanded="false" th:text="#{nav.offersMenu}"> Gestión de ofertas
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/offer/add">Agregar Oferta</a>
-          <a class="dropdown-item" href="/offer/list">Ver Ofertas Propias</a>
-          <a class="dropdown-item" href="/offer/listAll">Ver Ofertas</a>
-          <a class="dropdown-item" href="/offer/listBoughtOffers">Ver Ofertas Compradas</a>
+          <a class="dropdown-item" href="/offer/add" id="offersmenuAdd" th:text="#{nav.offerAdd}">Agregar Oferta</a>
+          <a class="dropdown-item" href="/offer/list" th:text="#{nav.offerList}">Ver Ofertas Propias</a>
+          <a class="dropdown-item" href="/offer/listAll" th:text="#{nav.offerListAll}">Ver Ofertas</a>
+          <a class="dropdown-item" href="/offer/listBoughtOffers" th:text="#{nav.offerListBought}">Ver Ofertas Compradas</a>
         </div>
       </li>
     </ul>

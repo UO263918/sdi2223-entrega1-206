@@ -22,7 +22,7 @@ public class Offer {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name="userBuyer_id")
     private User userBuyer;
 
     public Offer() {

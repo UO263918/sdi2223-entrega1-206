@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface OffersRepository extends CrudRepository<Offer, Long>{
 
-    @Query("SELECT r FROM Offer r WHERE (r.user.email NOT LIKE (?2))")
+    @Query("SELECT r FROM Offer r WHERE (r.user.email NOT LIKE (?1))")
     Page<Offer> findAll(Pageable pageable,String email);
 
     @Query("SELECT r FROM Offer r WHERE r.user = ?1 ORDER BY r.id ASC")

@@ -347,6 +347,51 @@ class Sdi2223206Entrega1Tests {
         PO_PrivateView.clickOption(driver, "logout", "text", "Password");
     }
 
+    //PR15: Ir al formulario de alta de oferta, rellenarla con datos válidos y pulsar el botón Enviar. Comprobar que la oferta sale en el listado de ofertas de dicho usuario.
+    @Test
+    @Order(15)
+    public void Prueba15() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillLoginForm(driver, "user01@email.com", "user01");
+
+        List<WebElement> elementos = SeleniumUtils.waitLoadElementsBy(driver, "id", "offersmenu",
+                PO_View.getTimeout());
+        elementos.get(0).click();
+        PO_HomeView.clickOption(driver, "/offer/add", "class", "btn btn-primary");
+        PO_AddOfferView.fillOfferForm(driver, "Prueba", "prueba prueba", 100);
+        assertTrue(driver.findElements(By.xpath("//table[@id='createdOffers']/tbody/tr")).size() == 11);
+    }
+
+    //PR16: Ir al formulario de alta de oferta, rellenarla con datos inválidos (precio negativo) y pulsar el botón Enviar. Comprobar que se muestra el mensaje de campo inválido.
+    @Test
+    @Order(16)
+    public void Prueba16() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillLoginForm(driver, "user01@email.com", "user01");
+        List<WebElement> elementos = SeleniumUtils.waitLoadElementsBy(driver, "id", "offersmenu",
+                PO_View.getTimeout());
+        elementos.get(0).click();
+        PO_HomeView.clickOption(driver, "/offer/add", "class", "btn btn-primary");
+        PO_AddOfferView.fillOfferForm(driver, "", "prueba prueba", 100);
+        driver.findElement(By.id("title")).getAttribute("validationMessage");
+        PO_HomeView.clickOption(driver, "home", "class", "container white");
+        assertTrue(driver.findElements(By.xpath("//table[@id='offerList']/tbody/tr")).size() == 10);
+    }
+
+    //PR17: Mostrar el listado de ofertas para dicho usuario y comprobar que se muestran todas los que existen para este usuario.
+    @Test
+    @Order(17)
+    public void Prueba17() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillLoginForm(driver, "user01@email.com", "user01");
+        List<WebElement> elementos = SeleniumUtils.waitLoadElementsBy(driver, "id", "offersmenu",
+                PO_View.getTimeout());
+        elementos.get(0).click();
+        PO_HomeView.clickOption(driver, "/offer/list", "class", "btn btn-primary");
+        assertTrue(driver.findElements(By.xpath("//table[@id='offerList']/tbody/tr")).size() == 10);
+    }
+
+
     /*//PR12. Loguearse, comprobar que se visualizan 4 filas de notas y desconectarse usando el rol de estudiante
     @Test
     @Order(18)

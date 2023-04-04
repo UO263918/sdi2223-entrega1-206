@@ -70,7 +70,7 @@ public class OffersController {
         } else {
             offers = offersService.getOffers(pageable, email);
         }
-        model.addAttribute("offerList", offers.getContent());
+        model.addAttribute("offerListPageable", offers.getContent());
         model.addAttribute("page", offers);
         return "offer/listAll";
     }
@@ -98,11 +98,12 @@ public class OffersController {
         return "redirect:/offer/list";
     }
 
-    @RequestMapping(value = "/offer/buy/{id}", method = RequestMethod.POST)
-    public String buyOffer(Model model, @PathVariable Long id) {
+    @RequestMapping(value = "/offer/buy/{id}")
+    public String buyOffer(@PathVariable Long id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User activeUser = usersService.getUserByEmail(auth.getName());
-        offersService.buyOffer(activeUser, offersService.getOffer(id));
+        Offer offer = offersService.getOffer(id);
+        offersService.buyOffer(activeUser, offer);
         return "redirect:/offer/listAll";
     }
 
